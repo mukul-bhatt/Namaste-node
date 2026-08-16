@@ -1,15 +1,17 @@
-const obj = require('./calculate/sum.js');
-const {multiply} = require('./calculate');
-require('./xyz.js');
+const fs = require("fs");
 
-// console.log("obj", obj);
-a = 10;
+var a = 109302242;
+var b = 342424;
 
-var b = 20;
+fetch("https://example.com")
+    .then(()=>console.log("Fetch call succeded"))
+    .catch((err)=>console.log("Fetch failed", err))
 
-var x = obj.calculateSum(a,b);
+setTimeout(() => console.log("set Timeout executed"), 3000);
 
-var multiplicationResult = multiply(a,b);
+fs.readFile('file.txt', 'utf8', (err, name) => {
+    console.log("data", err);
+})
 
-console.log(x);
-console.log(multiplicationResult);
+var result = a*b;
+console.log(result);
