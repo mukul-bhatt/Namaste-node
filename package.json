@@ -1,0 +1,28 @@
+{
+  "name": "namaste_node",
+  "version": "1.0.0",
+  "description": "This is a backend development learning project",
+  "keywords": [
+    "node.js",
+    "express"
+  ],
+  "homepage": "https://github.com/mukul-bhatt/Namaste-node#readme",
+  "bugs": {
+    "url": "https://github.com/mukul-bhatt/Namaste-node/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mukul-bhatt/Namaste-node.git"
+  },
+  "license": "ISC",
+  "author": "Mukul Bhatt",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
