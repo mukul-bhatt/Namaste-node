@@ -5,28 +5,14 @@ const app = express();
 const port = 3000;
 
 
-app.get("/", (req, res) => {
+app.get("/user/:id", (req, res) => {
+    console.log("params", req.params);
+    console.log("queryParams", req.query);
     res.send("Namaste node.js");
 })
 
-app.post("/", (req, res) => {
-    res.send("Namaste This is a post request");
-})
-
-app.delete("/", (res, req) => {
-    req.send("This is a successful delete request");
-})
-
-app.patch("/", (req, res) => {
-    res.send("This is a pathch request");
-})
-
-app.put("/", (req, res) => {
-    res.send("THis is a pUT request");
-})
-
-app.head("/", (req, res) => {
-    res.send("This is a HEAD Request");
+app.get("/abc", (req, res) => {
+    res.send("Namaste node.js");
 })
 
 app.listen(port, () => {
