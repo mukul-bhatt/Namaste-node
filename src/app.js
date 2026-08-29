@@ -5,15 +5,12 @@ const { userModel } = require("./models/user");
 const app = express();
 const port = 3000;
 
-app.post("/signup", async (req, res) => {
-    const user = {
-        firstName: "Mukul",
-        lastName: "Bhatt",
-        emailId: "mukul@gmail.com",
-        password: "fdsafaf"
-    }
+app.use(express.json());
 
-    const newUser = new userModel(user);
+app.post("/signup", async (req, res) => {
+
+    // console.log(req.body);
+    const newUser = new userModel(req.body);
 
     try{
         await newUser.save();
@@ -22,7 +19,6 @@ app.post("/signup", async (req, res) => {
         res.status(500).send("Something went wrong");
         console.error(err.message);
     }
-
     
 })
 
