@@ -11,6 +11,8 @@ app.use("/admin", adminAuth);
 
 
 app.get("/admin/getAllUsers", (req, res) => {
+
+    throw new Error("Helllo error,");
     console.log("All Users were successfully fetched");
     res.send("All users fetched");
 })
@@ -18,6 +20,14 @@ app.get("/admin/getAllUsers", (req, res) => {
 
 app.delete("/admin/deleteUser", (req, res) => {
     res.send("User deleted successfully");
+})
+
+
+app.use("/", (err, req, res, next) => {
+    if(err){
+        console.log("error is:", err);
+        res.status(500).send("Something went wrong, please try again");
+    }
 })
 
 app.listen(port, () => {

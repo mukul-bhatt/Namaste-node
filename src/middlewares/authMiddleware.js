@@ -1,6 +1,6 @@
 const adminAuth = (req, res, next) => {
     console.log("/admin was called");
-    const token = "alphasss";
+    const token = "alpha";
     const isAuthorised = token === "alpha";
 
     if(!isAuthorised) {
