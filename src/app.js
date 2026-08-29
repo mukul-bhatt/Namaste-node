@@ -5,22 +5,21 @@ const app = express();
 const port = 3000;
 
 
-app.get("/user",
-     (req, res, next) => {
-        console.log("First Route handler called");
-       
-        next();
-         res.send("1st Response Handler");
-    }
-   
-)
+app.get("/admin/getAllUsers", (req, res, next) => {
+    // Check if admin is authorised
+    const token = "alphass";
+    const isAuthorised = token === "alpha";
 
-app.get("/user",  (req, res, next) => {
-        console.log("Second route handler called");
-        next();
+    if(!isAuthorised) {
+        return res.status(401).send("Unauthorised");
     }
-)
 
+    next();
+},
+(req, res) => {
+    console.log("All Users were successfully fetched");
+    res.send("All users fetched");
+})
 
 app.listen(port, () => {
     console.log("Server successfully listening on port 3000");
