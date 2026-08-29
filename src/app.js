@@ -1,31 +1,19 @@
 const express = require("express");
+const {adminAuth}  = require("./middlewares/authMiddleware");
 
+// console.log(adminAuth)
 
 const app = express();
 const port = 3000;
 
-app.use("/admin", (req, res, next) => {
-    // Check if admin is authorised
 
-    console.log("/admin was called");
-    const token = "alphasss";
-    const isAuthorised = token === "alpha";
-
-    if(!isAuthorised) {
-        return res.status(401).send("Unauthorised");
-    }
-
-    next();
-})
-
-
-app.get("/admin/getAllUsers", (req, res) => {
+app.get("/admin/getAllUsers", adminAuth, (req, res) => {
     console.log("All Users were successfully fetched");
     res.send("All users fetched");
 })
 
 
-app.delete("/admin/deleteUser", (req, res) => {
+app.delete("/admin/deleteUser", adminAuth, (req, res) => {
     res.send("User deleted successfully");
 })
 
