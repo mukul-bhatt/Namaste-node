@@ -7,13 +7,16 @@ const app = express();
 const port = 3000;
 
 
-app.get("/admin/getAllUsers", adminAuth, (req, res) => {
+app.use("/admin", adminAuth);
+
+
+app.get("/admin/getAllUsers", (req, res) => {
     console.log("All Users were successfully fetched");
     res.send("All users fetched");
 })
 
 
-app.delete("/admin/deleteUser", adminAuth, (req, res) => {
+app.delete("/admin/deleteUser", (req, res) => {
     res.send("User deleted successfully");
 })
 
