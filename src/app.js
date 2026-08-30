@@ -102,6 +102,36 @@ app.delete("/deleteUserById", async(req, res) => {
 })
 
 
+// update a user
+app.patch("/user", async(req, res, next) => {
+    const userId = req.body.userId;
+
+    try {
+        const result = await userModel.findByIdAndUpdate(userId, req.body,
+            {
+                returnDocument: 'after'
+            }
+        );
+        console.log(result);
+        res.send({
+            result: "User data was updated",
+            data: result
+    });
+
+    } catch (error) {
+        console.error(error);
+        res.status(400).send("Something went wrong");
+    }
+})
+
+app.use("/", (err, req, res, next) => {
+    console.error(err);
+    res.status(500).send("Something went wrong");
+})
+
+
+
+
 connectDB().then(()=>{
     console.log("Database connection established successfully");
     app.listen(port, () => {
