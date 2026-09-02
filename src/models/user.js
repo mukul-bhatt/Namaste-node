@@ -4,14 +4,19 @@ const { Schema, model } = mongoose;
 const userSchema = new Schema({
     firstName: {
         type: String,
-        required: true
+        required: true,
+        minLength: 2,
+        maxLength: 50
     },
     lastName: {
         type: String,
     },
     emailId: {
         type:String,
-        required: true
+        required: true,
+        lowercase: true,
+        unique: true,
+        trim: true
 
     },
     password: {
@@ -29,7 +34,11 @@ const userSchema = new Schema({
         required: true,
         validate:{
             validator: (value) =>{
-                return ["male", "female", "others"].includes(value);
+                if(!["male", "female", "others"].includes(value)){
+                    throw new Error("Gender must be one of male, female, others");
+                }else{
+                    return true;
+                }
             }
         }
     },
