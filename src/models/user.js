@@ -10,6 +10,8 @@ const userSchema = new Schema({
     },
     lastName: {
         type: String,
+        minLength: 2,
+        maxLength: 50
     },
     emailId: {
         type:String,
@@ -17,7 +19,6 @@ const userSchema = new Schema({
         lowercase: true,
         unique: true,
         trim: true
-
     },
     password: {
         type: String,
