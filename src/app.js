@@ -1,6 +1,10 @@
 const express = require("express");
 const {connectDB} = require("./config/database");
 const { userModel } = require("./models/user");
+const { validateSignUpData, validateUpdateData } = require("./utils/validation");
+
+
+// console.log("validator", validator);
 
 const app = express();
 const port = 3000;
@@ -9,14 +13,18 @@ app.use(express.json());
 
 app.post("/signup", async (req, res) => {
 
-    // console.log(req.body);
-    const newUser = new userModel(req.body);
-
     try{
+        // Validation of signup data
+        validateSignUpData(req);
+
+        // Hash the pasword
+        
+
+        const newUser = new userModel(req.body);
         await newUser.save();
         res.send("User created successfully");
     }catch(err){
-        res.status(400).send(err.message);
+        res.status(400).send("ERROR: " + err.message);
         console.error("Error occured in /signup api",err.message);
     }
     
@@ -107,11 +115,20 @@ app.patch("/user", async(req, res, next) => {
     const userId = req.body.userId;
 
     try {
+
+        validateUpdateData(req.body);
+
         const result = await userModel.findByIdAndUpdate(userId, req.body,
             {
-                returnDocument: 'after'
+                returnDocument: 'after',
+                runValidators: true
             }
         );
+
+        if (!result) {
+            return res.status(404).send("Could not find user with userId " + userId);
+        }
+
         console.log(result);
         res.send({
             result: "User data was updated",
@@ -120,7 +137,7 @@ app.patch("/user", async(req, res, next) => {
 
     } catch (error) {
         console.error(error);
-        res.status(400).send("Something went wrong");
+        res.status(400).send(error.message);
     }
 })
 

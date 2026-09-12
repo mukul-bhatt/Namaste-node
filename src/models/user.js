@@ -52,7 +52,11 @@ const userSchema = new Schema({
         default: "https://static.vecteezy.com/system/resources/previews/026/434/409/non_2x/default-avatar-profile-icon-social-media-user-photo-vector.jpg"
     },
     skills: [String]
-})
+},
+{
+    timestamps: true
+}
+)
 
 const userModel = model("User", userSchema);
 
