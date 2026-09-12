@@ -18,19 +18,66 @@ app.post("/signup", async (req, res) => {
         // Validation of signup data
         validateSignUpData(req);
 
+        const {firstName, lastName, emailId,  password, age, gender, about, photoUrl} = req.body;
+
         // Hash the pasword
-        const passwordHash = await bcrypt.hash(req.body.password, 10);
-        // console.log(passwordHash);
-        req.body.password = passwordHash;
-        const newUser = new userModel(req.body);
+        const passwordHash = await bcrypt.hash(password, 10);
+
+        const newUser = new userModel({
+            firstName,
+            lastName,
+            emailId,
+            password: passwordHash,
+            age,
+            gender,
+            about,
+            photoUrl
+        });
         await newUser.save();
         res.send("User created successfully");
+
     }catch(err){
+        console.error("Error occured in /signup api", err.message);
         res.status(400).send("ERROR: " + err.message);
-        console.error("Error occured in /signup api",err.message);
     }
     
 });
+
+app.post("/login",  async (req, res) => {
+
+    const {emailId, password} = req.body;
+
+    // Check if it is a valid user
+    try{
+
+    const user = await userModel.findOne({emailId: emailId});
+
+    if(!user){
+        res.status(400).send("Invalid credentials");
+        return;
+    }
+
+    // If it is a valid user, match the passwords
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if(isValidPassword){
+        res.send({
+            msg: "Login successful",
+            data: {
+                firstName: user.firstName,
+                lastName: user.lastName
+            },
+        })
+    }else{
+        res.status(400).send("Invalid Credentials")
+    }
+
+    }catch(err){
+        res.status(400).send("ERROR : " + err.message);
+    }
+
+})  
+
 
 
 app.get("/find", async (req, res) => {
