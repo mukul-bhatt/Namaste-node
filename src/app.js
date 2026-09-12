@@ -2,6 +2,7 @@ const express = require("express");
 const {connectDB} = require("./config/database");
 const { userModel } = require("./models/user");
 const { validateSignUpData, validateUpdateData } = require("./utils/validation");
+const bcrypt = require('bcrypt');
 
 
 // console.log("validator", validator);
@@ -18,8 +19,9 @@ app.post("/signup", async (req, res) => {
         validateSignUpData(req);
 
         // Hash the pasword
-        
-
+        const passwordHash = await bcrypt.hash(req.body.password, 10);
+        // console.log(passwordHash);
+        req.body.password = passwordHash;
         const newUser = new userModel(req.body);
         await newUser.save();
         res.send("User created successfully");
