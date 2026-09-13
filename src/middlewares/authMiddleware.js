@@ -1,15 +1,36 @@
-const adminAuth = (req, res, next) => {
-    console.log("/admin was called");
-    const token = "alpha";
-    const isAuthorised = token === "alpha";
+const jwt = require("jsonwebtoken");
+const { userModel } = require("../models/user");
 
-    if(!isAuthorised) {
-        return res.status(401).send("Unauthorised");
+const secretKey = "Dev_mukul#12390";
+
+const userAuth = async (req, res, next) =>{
+
+    try{
+
+    const cookies = req.cookies;
+    // console.log("USER AUTH COOKIES", cookies);
+    const {token} = cookies;
+    const {id} = jwt.verify(token, secretKey);
+    
+    const user = await userModel.findById(id);
+
+    if(!user){
+        throw new Error("User Not Found");
     }
 
+    // If user exists, attach it to the request object, so other handlers can use it
+    req.user = user;
     next();
+
+    }catch(err){
+        res.status(401).send("ERROR : " + err.message);
+    }
 }
 
+
+
+
 module.exports = {
-    adminAuth,
+    userAuth,
+    secretKey
 }

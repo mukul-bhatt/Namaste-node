@@ -3,7 +3,9 @@ const {connectDB} = require("./config/database");
 const { userModel } = require("./models/user");
 const { validateSignUpData, validateUpdateData } = require("./utils/validation");
 const bcrypt = require('bcrypt');
-
+const cookieParser = require('cookie-parser');
+const jwt = require("jsonwebtoken");
+const { userAuth, secretKey } = require("./middlewares/authMiddleware")
 
 // console.log("validator", validator);
 
@@ -11,6 +13,7 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/signup", async (req, res) => {
 
@@ -61,12 +64,15 @@ app.post("/login",  async (req, res) => {
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if(isValidPassword){
+
+        const token = jwt.sign({
+            id: user._id
+        }, secretKey, { expiresIn: "1h" });
+
+        res.cookie("token", token);
         res.send({
             msg: "Login successful",
-            data: {
-                firstName: user.firstName,
-                lastName: user.lastName
-            },
+          
         })
     }else{
         res.status(400).send("Invalid Credentials")
@@ -77,6 +83,18 @@ app.post("/login",  async (req, res) => {
     }
 
 })  
+
+
+
+app.get("/profile", userAuth, async (req, res) => {
+
+    try{
+        res.send(req.user);
+    }catch(err){
+        res.status(400).send("ERROR : " + err.message);
+    }
+
+})
 
 
 
