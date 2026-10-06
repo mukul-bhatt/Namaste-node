@@ -1,0 +1,28 @@
+// Authentication:
+
+// authRouter
+-  POST /signUp
+-  POST /login
+-  POST /logout
+-  POST /forgot password
+
+
+// ProfileRouter:
+- GET /profile/view
+- PATCH /profile/edit 
+- PATCH /profile/password
+- PATCH /profile/updateEmail
+
+// connectionRequestRouter:
+- POST /request/send/interested/:userId     - Like
+- POST /request/send/ignore/:userId         - Pass
+
+- POST /request/review/accept/:requestId    - accept
+- POST /request/review/rejected/:userId
+
+
+// userRouter
+- GET /user/connections
+- GET /user/requests
+- GET /user/feed
+
