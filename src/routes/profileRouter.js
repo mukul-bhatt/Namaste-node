@@ -54,26 +54,6 @@ router.patch("/profile/edit", userAuth, async (req, res) => {
    
 })
 
-router.post("/sendForgotPasswordOtp", async (req, res) => {
-    const { emailId } = req.body;
 
-    // Check if this is a valid email address in the database
-    const result = await userModel.exists({
-        emailId: emailId
-    })
-
-    
-
-    // If user exists, send them a otp that is valid for 5 minutes
-    
-    res.send("Result");
-
-})
-
-router.patch("/forgotPassword", async (req, res) => {
-    const { otp, newPassword, confirmPassword } = req.body;
-
-    // Check if otp is the valid otp for this user
-})
 
 module.exports = router;
