@@ -39,16 +39,19 @@ router.post("/signup", async (req, res) => {
       about,
       photoUrl,
     });
+
     await newUser.save();
     res.send("User created successfully");
   } catch (err) {
-    console.error("Error occured in /signup api", err.message);
+    console.error("Error occured in /signup api", err);
     res.status(400).send("ERROR: " + err.message);
   }
 });
 
 router.post("/login", async (req, res) => {
   const { emailId, password } = req.body;
+
+  // console.log(emailId, password);
 
   // Check if it is a valid user
   try {
